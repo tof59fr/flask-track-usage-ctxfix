@@ -40,7 +40,7 @@ from six.moves.urllib.request import urlopen
 
 import six
 
-from flask import _request_ctx_stack, g
+from flask import request, g
 try:
     from flask_login import current_user
 except Exception:
@@ -109,7 +109,7 @@ class TrackUsage(object):
         """
         Done before every request that is in scope.
         """
-        ctx = _request_ctx_stack.top
+        ctx = flask.globals.request_ctx._get_current_object()
         view_func = self.app.view_functions.get(ctx.request.endpoint)
         if self._type == 'exclude':
             if view_func in self._exclude_views:
@@ -132,7 +132,7 @@ class TrackUsage(object):
         :Parameters:
            - `response`: The response on it's way to the client.
         """
-        ctx = _request_ctx_stack.top
+        ctx = flask.globals.request_ctx._get_current_object()
         view_func = self.app.view_functions.get(ctx.request.endpoint)
         if self._type == 'exclude':
             if view_func in self._exclude_views:
