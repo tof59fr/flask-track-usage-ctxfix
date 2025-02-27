@@ -39,7 +39,7 @@ from six.moves.urllib_parse import quote_plus
 from six.moves.urllib.request import urlopen
 
 import six
-
+from flask.globals import request_ctx
 from flask import request, g
 try:
     from flask_login import current_user
@@ -109,7 +109,7 @@ class TrackUsage(object):
         """
         Done before every request that is in scope.
         """
-        ctx = flask.globals.request_ctx._get_current_object()
+        ctx = request_ctx
         view_func = self.app.view_functions.get(ctx.request.endpoint)
         if self._type == 'exclude':
             if view_func in self._exclude_views:
@@ -132,7 +132,7 @@ class TrackUsage(object):
         :Parameters:
            - `response`: The response on it's way to the client.
         """
-        ctx = flask.globals.request_ctx._get_current_object()
+        ctx = request_ctx
         view_func = self.app.view_functions.get(ctx.request.endpoint)
         if self._type == 'exclude':
             if view_func in self._exclude_views:
